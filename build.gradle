@@ -18,7 +18,6 @@ plugins {
     id "org.springframework.boot"
     id "com.google.cloud.tools.jib"
     id "com.gorylenko.gradle-git-properties"
-    id "com.github.node-gradle.node"
     id "net.ltgt.apt-eclipse"
     id "net.ltgt.apt-idea"
     id "net.ltgt.apt"
@@ -64,12 +63,6 @@ if (project.hasProperty("gae")) {
     appengineStage.dependsOn thinResolve
 }
 
-
-idea {
-    module {
-        excludeDirs += files("node_modules")
-    }
-}
 
 eclipse {
     sourceSets {
@@ -142,8 +135,8 @@ liquibase {
         main {
             driver "org.postgresql.Driver"
             url "jdbc:postgresql://localhost:5432/third"
-            username "third"
-            password ""
+            username "postgres"
+            password "123456"
             changeLogFile "src/main/resources/config/liquibase/master.xml"
             defaultSchemaName ""
             logLevel "debug"
@@ -152,8 +145,8 @@ liquibase {
         diffLog {
             driver "org.postgresql.Driver"
             url "jdbc:postgresql://localhost:5432/third"
-            username "third"
-            password ""
+            username "postgres"
+            password "123456"
             changeLogFile project.ext.diffChangelogFile
             referenceUrl "hibernate:spring:com.jcwhmn.domain?dialect=io.github.jhipster.domain.util.FixedPostgreSQL10Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
             defaultSchemaName ""
@@ -300,14 +293,5 @@ wrapper {
     gradleVersion = "6.5"
 }
 
-
-if (project.hasProperty("nodeInstall")) {
-    node {
-        version = "${node_version}"
-        npmVersion = "${npm_version}"
-        yarnVersion = "${yarn_version}"
-        download = true
-    }
-}
 compileJava.dependsOn processResources
 processResources.dependsOn bootBuildInfo
